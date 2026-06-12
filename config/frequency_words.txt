@@ -34,3 +34,6 @@
 
 [论文与基准]
 /arXiv|Nature|Science|Physical Review|PRX Quantum|npj Quantum Information|quantum advantage|量子优越性|quantum supremacy|benchmark|fidelity|保真度|量子体积|quantum volume/ => 论文与基准
+
+[量子领域其他]
+/.*/ => 量子领域其他

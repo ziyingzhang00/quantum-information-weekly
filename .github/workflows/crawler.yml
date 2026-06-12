@@ -38,6 +38,17 @@ on:
     - cron: "33 * * * *"
 
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run mode"
+        required: true
+        default: "crawl"
+        type: choice
+        options:
+          - crawl
+          - test_notification
+          - show_schedule
+          - doctor
 
 concurrency:
   group: crawler-${{ github.ref_name }}
@@ -167,4 +178,19 @@ jobs:
           S3_ENDPOINT_URL: ${{ secrets.S3_ENDPOINT_URL }}
           S3_REGION: ${{ secrets.S3_REGION }}
           GITHUB_ACTIONS: true
-        run: uv run python -m trendradar
+        run: |
+          MODE="${{ github.event.inputs.mode || 'crawl' }}"
+          case "$MODE" in
+            test_notification)
+              uv run python -m trendradar --test-notification
+              ;;
+            show_schedule)
+              uv run python -m trendradar --show-schedule
+              ;;
+            doctor)
+              uv run python -m trendradar --doctor
+              ;;
+            *)
+              uv run python -m trendradar
+              ;;
+          esac
